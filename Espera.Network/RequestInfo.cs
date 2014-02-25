@@ -7,6 +7,8 @@ namespace Espera.Network
     {
         public JObject Parameters { get; set; }
 
+        public string RequestAction { get; set; }
+
         public Guid RequestId { get; set; }
     }
 }
