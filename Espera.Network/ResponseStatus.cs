@@ -8,6 +8,7 @@
         MalformedRequest,
         NotFound,
         NotSupported,
-        Rejected
+        Rejected,
+        Fatal
     }
 }
