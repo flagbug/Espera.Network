@@ -10,6 +10,6 @@ namespace Espera.Network
 
         public int? RemainingVotes { get; set; }
 
-        public IEnumerable<NetworkSong> Songs { get; set; }
+        public IReadOnlyList<NetworkSong> Songs { get; set; }
     }
 }
