@@ -9,6 +9,7 @@
         NotFound,
         NotSupported,
         Rejected,
-        Fatal
+        Fatal,
+        WrongPassword
     }
 }
