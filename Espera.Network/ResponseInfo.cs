@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace Espera.Network
 {
@@ -7,6 +8,8 @@ namespace Espera.Network
         public JObject Content { get; set; }
 
         public string Message { get; set; }
+
+        public Guid RequestId { get; set; }
 
         public ResponseStatus Status { get; set; }
     }
