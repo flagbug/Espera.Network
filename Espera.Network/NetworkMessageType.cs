@@ -3,6 +3,7 @@
     public enum NetworkMessageType
     {
         Push,
-        Response
+        Response,
+        Request
     }
 }
