@@ -2,7 +2,7 @@
 
 namespace Espera.Network
 {
-    public class Playlist
+    public class NetworkPlaylist
     {
         public int? CurrentIndex { get; set; }
 
