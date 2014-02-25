@@ -12,37 +12,9 @@ namespace Espera.Network
 {
     public static class NetworkHelpers
     {
-        public static async Task<byte[]> CompressDataAsync(byte[] data)
+        public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
         {
-            using (var targetStream = new MemoryStream())
-            {
-                using (var stream = new GZipStream(targetStream, CompressionMode.Compress))
-                {
-                    await stream.WriteAsync(data, 0, data.Length);
-                }
-
-                return targetStream.ToArray();
-            }
-        }
-
-        public static async Task<byte[]> DecompressDataAsync(byte[] data)
-        {
-            using (var sourceStream = new MemoryStream(data))
-            {
-                using (var stream = new GZipStream(sourceStream, CompressionMode.Decompress))
-                {
-                    using (var targetStream = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(targetStream);
-                        return targetStream.ToArray();
-                    }
-                }
-            }
-        }
-
-        public static async Task<byte[]> PackMessageAsync(JObject message)
-        {
-            byte[] contentBytes = Encoding.UTF8.GetBytes(message.ToString(Formatting.None));
+            byte[] contentBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message, Formatting.None));
 
             contentBytes = await CompressDataAsync(contentBytes);
 
@@ -54,8 +26,11 @@ namespace Espera.Network
         /// <summary>
         /// Reads the next message for the Espera protocol from the TCP client.
         /// </summary>
-        /// <returns>The uncompressed, deserialized message in JSON, or null, if the underlying client has closed the connection.</returns>
-        public static async Task<JObject> ReadNextMessageAsync(this TcpClient client)
+        /// <returns>
+        /// The uncompressed, deserialized message in JSON, or null, if the underlying client has
+        /// closed the connection.
+        /// </returns>
+        public static async Task<NetworkMessage> ReadNextMessageAsync(this TcpClient client)
         {
             byte[] messageLength = await client.ReadAsync(4);
 
@@ -76,9 +51,37 @@ namespace Espera.Network
             byte[] decompressed = await DecompressDataAsync(messageContent);
             string decoded = Encoding.UTF8.GetString(decompressed);
 
-            JObject jsonMessage = JObject.Parse(decoded);
+            var message = JObject.Parse(decoded).ToObject<NetworkMessage>();
 
-            return jsonMessage;
+            return message;
+        }
+
+        private static async Task<byte[]> CompressDataAsync(byte[] data)
+        {
+            using (var targetStream = new MemoryStream())
+            {
+                using (var stream = new GZipStream(targetStream, CompressionMode.Compress))
+                {
+                    await stream.WriteAsync(data, 0, data.Length);
+                }
+
+                return targetStream.ToArray();
+            }
+        }
+
+        private static async Task<byte[]> DecompressDataAsync(byte[] data)
+        {
+            using (var sourceStream = new MemoryStream(data))
+            {
+                using (var stream = new GZipStream(sourceStream, CompressionMode.Decompress))
+                {
+                    using (var targetStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(targetStream);
+                        return targetStream.ToArray();
+                    }
+                }
+            }
         }
 
         private static async Task<byte[]> ReadAsync(this TcpClient client, int length)
