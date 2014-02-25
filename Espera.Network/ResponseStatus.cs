@@ -3,7 +3,6 @@
     public enum ResponseStatus
     {
         Success,
-        PlaylistEntryNotFound,
         Unauthorized,
         MalformedRequest,
         NotFound,
