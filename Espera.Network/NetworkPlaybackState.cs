@@ -2,10 +2,10 @@
 {
     public enum NetworkPlaybackState
     {
-        None,
-        Playing,
-        Paused,
-        Stopped,
-        Finished
+        None = 0,
+        Playing = 1,
+        Paused = 2,
+        Stopped = 3,
+        Finished = 4
     }
 }
