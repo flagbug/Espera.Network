@@ -8,6 +8,8 @@ namespace Espera.Network
 
         public string Name { get; set; }
 
+        public NetworkPlaybackState PlaybackState { get; set; }
+
         public int? RemainingVotes { get; set; }
 
         public ReadOnlyCollection<NetworkSong> Songs { get; set; }
