@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 
 namespace Espera.Network
 {
@@ -10,6 +10,6 @@ namespace Espera.Network
 
         public int? RemainingVotes { get; set; }
 
-        public IReadOnlyList<NetworkSong> Songs { get; set; }
+        public ReadOnlyCollection<NetworkSong> Songs { get; set; }
     }
 }
