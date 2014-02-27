@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileTransferMessage.cs" />
+    <Compile Include="FileTransferInfo.cs" />
     <Compile Include="NetworkAccessPermission.cs" />
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="NetworkHelpers.cs" />
