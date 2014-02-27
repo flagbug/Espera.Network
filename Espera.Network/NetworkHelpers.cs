@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
@@ -12,6 +13,25 @@ namespace Espera.Network
 {
     public static class NetworkHelpers
     {
+        public static async Task<byte[]> PackFileTransferMessageAsync(FileTransferMessage message)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var serializer = new JsonSerializer();
+
+                using (var writer = new BsonWriter(ms))
+                {
+                    serializer.Serialize(writer, message);
+
+                    byte[] contentBytes = await CompressDataAsync(ms.ToArray());
+
+                    byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
+
+                    return length.Concat(contentBytes).ToArray();
+                }
+            }
+        }
+
         public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
         {
             byte[] contentBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message, Formatting.None));
@@ -21,6 +41,39 @@ namespace Espera.Network
             byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
 
             return length.Concat(contentBytes).ToArray();
+        }
+
+        public static async Task<FileTransferMessage> ReadNextFileTransferMessageAsync(this TcpClient client)
+        {
+            byte[] messageLength = await client.ReadAsync(4);
+
+            if (messageLength.Length == 0)
+            {
+                return null;
+            }
+
+            int realMessageLength = BitConverter.ToInt32(messageLength, 0);
+
+            byte[] messageContent = await client.ReadAsync(realMessageLength);
+
+            if (messageLength.Length == 0)
+            {
+                return null;
+            }
+
+            byte[] decompressed = await DecompressDataAsync(messageContent);
+
+            using (var stream = new MemoryStream())
+            {
+                await stream.WriteAsync(decompressed, 0, decompressed.Length);
+
+                var deserializer = new JsonSerializer();
+
+                using (var reader = new BsonReader(stream))
+                {
+                    return deserializer.Deserialize<FileTransferMessage>(reader);
+                }
+            }
         }
 
         /// <summary>
