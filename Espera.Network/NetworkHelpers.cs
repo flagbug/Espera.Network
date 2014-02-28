@@ -15,21 +15,23 @@ namespace Espera.Network
     {
         public static async Task<byte[]> PackFileTransferMessageAsync(FileTransferMessage message)
         {
+            byte[] contentBytes;
+
             using (var ms = new MemoryStream())
             {
                 var serializer = new JsonSerializer();
 
                 using (var writer = new BsonWriter(ms))
                 {
-                    serializer.Serialize(writer, message);
+                    await Task.Run(() => serializer.Serialize(writer, message));
 
-                    byte[] contentBytes = await CompressDataAsync(ms.ToArray());
-
-                    byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
-
-                    return length.Concat(contentBytes).ToArray();
+                    contentBytes = ms.ToArray();
                 }
             }
+
+            byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
+
+            return length.Concat(contentBytes).ToArray();
         }
 
         public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
@@ -56,16 +58,14 @@ namespace Espera.Network
 
             byte[] messageContent = await client.ReadAsync(realMessageLength);
 
-            if (messageLength.Length == 0)
+            if (messageContent.Length == 0)
             {
                 return null;
             }
 
-            byte[] decompressed = await DecompressDataAsync(messageContent);
-
             using (var stream = new MemoryStream())
             {
-                await stream.WriteAsync(decompressed, 0, decompressed.Length);
+                await stream.WriteAsync(messageContent, 0, messageContent.Length);
 
                 var deserializer = new JsonSerializer();
 
@@ -96,7 +96,7 @@ namespace Espera.Network
 
             byte[] messageContent = await client.ReadAsync(realMessageLength);
 
-            if (messageLength.Length == 0)
+            if (messageContent.Length == 0)
             {
                 return null;
             }
