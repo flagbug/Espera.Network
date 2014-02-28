@@ -29,8 +29,8 @@ namespace Espera.Network
 
                     var returnData = new byte[length.Length + ms.Length];
 
-                    // We could simply call .ToArray() everywhere, but this reduced memory pressure
-                    // and reduces CPU time on mobile devices by an order of magnitude
+                    // We could simply call .ToArray() everywhere, but with Buffer.BlockCopy, we are
+                    // reducing memory pressure and CPU time on mobile devices by an order of magnitude
                     Buffer.BlockCopy(length, 0, returnData, 0, length.Length);
                     Buffer.BlockCopy(ms.ToArray(), 0, returnData, length.Length, (int)ms.Length);
 
