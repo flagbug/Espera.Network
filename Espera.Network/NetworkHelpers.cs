@@ -23,7 +23,7 @@ namespace Espera.Network
                 {
                     await Task.Run(() => serializer.Serialize(writer, message));
 
-                    byte[] length = BitConverter.GetBytes(ms.Length); // We have a fixed size of 4 bytes
+                    byte[] length = BitConverter.GetBytes((int)ms.Length); // We have a fixed size of 4 bytes
 
                     var returnData = new byte[length.Length + ms.Length];
 
