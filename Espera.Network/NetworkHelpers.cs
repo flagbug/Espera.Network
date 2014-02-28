@@ -23,8 +23,6 @@ namespace Espera.Network
                 {
                     await Task.Run(() => serializer.Serialize(writer, message));
 
-                    message.Data = null;
-
                     byte[] length = BitConverter.GetBytes(ms.Length); // We have a fixed size of 4 bytes
 
                     var returnData = new byte[length.Length + ms.Length];
@@ -68,7 +66,7 @@ namespace Espera.Network
                 return null;
             }
 
-            using (var stream = new MemoryStream())
+            using (var stream = new MemoryStream(messageContent))
             {
                 await stream.WriteAsync(messageContent, 0, messageContent.Length);
 
