@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
-using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -109,12 +108,21 @@ namespace Espera.Network
                 return null;
             }
 
-            byte[] decompressed = await DecompressDataAsync(messageContent);
-            string decoded = Encoding.UTF8.GetString(decompressed);
+            using (var contentStream = new MemoryStream(messageContent))
+            {
+                using (var stream = new GZipStream(contentStream, CompressionMode.Decompress))
+                {
+                    using (var sr = new StreamReader(stream, Encoding.UTF8))
+                    {
+                        using (var reader = new JsonTextReader(sr))
+                        {
+                            var serializer = new JsonSerializer();
 
-            var message = JObject.Parse(decoded).ToObject<NetworkMessage>();
-
-            return message;
+                            return await Task.Run(() => serializer.Deserialize<NetworkMessage>(reader));
+                        }
+                    }
+                }
+            }
         }
 
         private static async Task<byte[]> CompressDataAsync(byte[] data)
@@ -127,21 +135,6 @@ namespace Espera.Network
                 }
 
                 return targetStream.ToArray();
-            }
-        }
-
-        private static async Task<byte[]> DecompressDataAsync(byte[] data)
-        {
-            using (var sourceStream = new MemoryStream(data))
-            {
-                using (var stream = new GZipStream(sourceStream, CompressionMode.Decompress))
-                {
-                    using (var targetStream = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(targetStream);
-                        return targetStream.ToArray();
-                    }
-                }
             }
         }
 
