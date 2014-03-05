@@ -15,6 +15,8 @@ namespace Espera.Network
     {
         public static async Task<byte[]> PackFileTransferMessageAsync(FileTransferMessage message)
         {
+            byte[] serialized;
+
             using (var ms = new MemoryStream())
             {
                 var serializer = new JsonSerializer();
@@ -23,18 +25,20 @@ namespace Espera.Network
                 {
                     await Task.Run(() => serializer.Serialize(writer, message));
 
-                    byte[] length = BitConverter.GetBytes((int)ms.Length); // We have a fixed size of 4 bytes
-
-                    var returnData = new byte[length.Length + ms.Length];
-
-                    // We could simply call .ToArray() everywhere, but with Buffer.BlockCopy, we are
-                    // reducing memory pressure and CPU time on mobile devices by an order of magnitude
-                    Buffer.BlockCopy(length, 0, returnData, 0, length.Length);
-                    Buffer.BlockCopy(ms.ToArray(), 0, returnData, length.Length, (int)ms.Length);
-
-                    return returnData;
+                    serialized = ms.ToArray();
                 }
             }
+
+            byte[] length = BitConverter.GetBytes(serialized.Length); // We have a fixed size of 4 bytes
+
+            var returnData = new byte[length.Length + serialized.Length];
+
+            // We could simply call .ToArray() everywhere, but with Buffer.BlockCopy, we are
+            // reducing memory pressure and CPU time on mobile devices by an order of magnitude
+            Buffer.BlockCopy(length, 0, returnData, 0, length.Length);
+            Buffer.BlockCopy(serialized, 0, returnData, length.Length, serialized.Length);
+
+            return returnData;
         }
 
         public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
