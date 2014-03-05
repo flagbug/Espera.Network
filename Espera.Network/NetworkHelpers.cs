@@ -39,7 +39,8 @@ namespace Espera.Network
 
         public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
         {
-            byte[] contentBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message, Formatting.None));
+            string serialized = JsonConvert.SerializeObject(message, Formatting.None);
+            byte[] contentBytes = Encoding.UTF8.GetBytes(serialized);
 
             contentBytes = await CompressDataAsync(contentBytes);
 
