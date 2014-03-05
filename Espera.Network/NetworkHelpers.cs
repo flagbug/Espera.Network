@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
-using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,14 +41,19 @@ namespace Espera.Network
 
         public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
         {
-            string serialized = JsonConvert.SerializeObject(message, Formatting.None);
+            string serialized = await Task.Run(() => JsonConvert.SerializeObject(message, Formatting.None));
             byte[] contentBytes = Encoding.UTF8.GetBytes(serialized);
 
             contentBytes = await CompressDataAsync(contentBytes);
 
             byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
 
-            return length.Concat(contentBytes).ToArray();
+            var returnData = new byte[length.Length + serialized.Length];
+
+            Buffer.BlockCopy(length, 0, returnData, 0, length.Length);
+            Buffer.BlockCopy(contentBytes, 0, returnData, length.Length, contentBytes.Length);
+
+            return returnData;
         }
 
         public static async Task<FileTransferMessage> ReadNextFileTransferMessageAsync(this TcpClient client)
@@ -109,12 +112,21 @@ namespace Espera.Network
                 return null;
             }
 
-            byte[] decompressed = await DecompressDataAsync(messageContent);
-            string decoded = Encoding.UTF8.GetString(decompressed);
+            using (var contentStream = new MemoryStream(messageContent))
+            {
+                using (var stream = new GZipStream(contentStream, CompressionMode.Decompress))
+                {
+                    using (var sr = new StreamReader(stream, Encoding.UTF8))
+                    {
+                        using (var reader = new JsonTextReader(sr))
+                        {
+                            var serializer = new JsonSerializer();
 
-            var message = JObject.Parse(decoded).ToObject<NetworkMessage>();
-
-            return message;
+                            return await Task.Run(() => serializer.Deserialize<NetworkMessage>(reader));
+                        }
+                    }
+                }
+            }
         }
 
         private static async Task<byte[]> CompressDataAsync(byte[] data)
@@ -127,21 +139,6 @@ namespace Espera.Network
                 }
 
                 return targetStream.ToArray();
-            }
-        }
-
-        private static async Task<byte[]> DecompressDataAsync(byte[] data)
-        {
-            using (var sourceStream = new MemoryStream(data))
-            {
-                using (var stream = new GZipStream(sourceStream, CompressionMode.Decompress))
-                {
-                    using (var targetStream = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(targetStream);
-                        return targetStream.ToArray();
-                    }
-                }
             }
         }
 
