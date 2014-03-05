@@ -3,7 +3,6 @@ using Newtonsoft.Json.Bson;
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,14 +41,19 @@ namespace Espera.Network
 
         public static async Task<byte[]> PackMessageAsync(NetworkMessage message)
         {
-            string serialized = JsonConvert.SerializeObject(message, Formatting.None);
+            string serialized = await Task.Run(() => JsonConvert.SerializeObject(message, Formatting.None));
             byte[] contentBytes = Encoding.UTF8.GetBytes(serialized);
 
             contentBytes = await CompressDataAsync(contentBytes);
 
             byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
 
-            return length.Concat(contentBytes).ToArray();
+            var returnData = new byte[length.Length + serialized.Length];
+
+            Buffer.BlockCopy(length, 0, returnData, 0, length.Length);
+            Buffer.BlockCopy(contentBytes, 0, returnData, length.Length, contentBytes.Length);
+
+            return returnData;
         }
 
         public static async Task<FileTransferMessage> ReadNextFileTransferMessageAsync(this TcpClient client)
