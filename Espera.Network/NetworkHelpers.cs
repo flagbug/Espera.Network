@@ -48,7 +48,7 @@ namespace Espera.Network
 
             byte[] length = BitConverter.GetBytes(contentBytes.Length); // We have a fixed size of 4 bytes
 
-            var returnData = new byte[length.Length + serialized.Length];
+            var returnData = new byte[length.Length + contentBytes.Length];
 
             Buffer.BlockCopy(length, 0, returnData, 0, length.Length);
             Buffer.BlockCopy(contentBytes, 0, returnData, length.Length, contentBytes.Length);
