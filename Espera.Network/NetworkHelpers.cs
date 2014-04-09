@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 
 namespace Espera.Network
 {
@@ -56,9 +55,9 @@ namespace Espera.Network
             return returnData;
         }
 
-        public static async Task<FileTransferMessage> ReadNextFileTransferMessageAsync(this TcpClient client)
+        public static async Task<FileTransferMessage> ReadNextFileTransferMessageAsync(this Stream stream)
         {
-            byte[] messageLength = await client.ReadAsync(4);
+            byte[] messageLength = await stream.ReadAsync(4);
 
             if (messageLength.Length == 0)
             {
@@ -67,20 +66,20 @@ namespace Espera.Network
 
             int realMessageLength = BitConverter.ToInt32(messageLength, 0);
 
-            byte[] messageContent = await client.ReadAsync(realMessageLength);
+            byte[] messageContent = await stream.ReadAsync(realMessageLength);
 
             if (messageContent.Length == 0)
             {
                 return null;
             }
 
-            using (var stream = new MemoryStream(messageContent))
+            using (var memoryStream = new MemoryStream(messageContent))
             {
-                await stream.WriteAsync(messageContent, 0, messageContent.Length);
+                await memoryStream.WriteAsync(messageContent, 0, messageContent.Length);
 
                 var deserializer = new JsonSerializer();
 
-                using (var reader = new BsonReader(stream))
+                using (var reader = new BsonReader(memoryStream))
                 {
                     return deserializer.Deserialize<FileTransferMessage>(reader);
                 }
@@ -88,15 +87,15 @@ namespace Espera.Network
         }
 
         /// <summary>
-        /// Reads the next message for the Espera protocol from the TCP client.
+        /// Reads the next message for the Espera protocol from the stream.
         /// </summary>
         /// <returns>
         /// The uncompressed, deserialized message in JSON, or null, if the underlying client has
         /// closed the connection.
         /// </returns>
-        public static async Task<NetworkMessage> ReadNextMessageAsync(this TcpClient client)
+        public static async Task<NetworkMessage> ReadNextMessageAsync(this Stream stream)
         {
-            byte[] messageLength = await client.ReadAsync(4);
+            byte[] messageLength = await stream.ReadAsync(4);
 
             if (messageLength.Length == 0)
             {
@@ -105,7 +104,7 @@ namespace Espera.Network
 
             int realMessageLength = BitConverter.ToInt32(messageLength, 0);
 
-            byte[] messageContent = await client.ReadAsync(realMessageLength);
+            byte[] messageContent = await stream.ReadAsync(realMessageLength);
 
             if (messageContent.Length == 0)
             {
@@ -114,9 +113,9 @@ namespace Espera.Network
 
             using (var contentStream = new MemoryStream(messageContent))
             {
-                using (var stream = new GZipStream(contentStream, CompressionMode.Decompress))
+                using (var gzipStream = new GZipStream(contentStream, CompressionMode.Decompress))
                 {
-                    using (var sr = new StreamReader(stream, Encoding.UTF8))
+                    using (var sr = new StreamReader(gzipStream, Encoding.UTF8))
                     {
                         using (var reader = new JsonTextReader(sr))
                         {
@@ -142,7 +141,7 @@ namespace Espera.Network
             }
         }
 
-        private static async Task<byte[]> ReadAsync(this TcpClient client, int length)
+        private static async Task<byte[]> ReadAsync(this Stream stream, int length)
         {
             if (length <= 0)
                 throw new ArgumentOutOfRangeException("length", "Length must be greater than 0");
@@ -152,7 +151,7 @@ namespace Espera.Network
 
             do
             {
-                int read = await client.GetStream().ReadAsync(buffer, count, length - count);
+                int read = await stream.ReadAsync(buffer, count, length - count);
                 count += read;
 
                 // The client has closed the connection
