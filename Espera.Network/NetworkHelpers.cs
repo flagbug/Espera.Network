@@ -75,8 +75,6 @@ namespace Espera.Network
 
             using (var memoryStream = new MemoryStream(messageContent))
             {
-                await memoryStream.WriteAsync(messageContent, 0, messageContent.Length);
-
                 var deserializer = new JsonSerializer();
 
                 using (var reader = new BsonReader(memoryStream))
