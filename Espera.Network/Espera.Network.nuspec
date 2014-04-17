@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Espera-Network</id>
+        <version>$version$</version>
+        <title>Espera.Network</title>
+        <authors>Dennis Daume</authors>
+        <owners>Dennis Daume</owners>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>https://github.com/flagbug/Espera.Network</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Network classes for Espera.</description>
+        <tags></tags>
+		<dependencies>
+		  <dependency id="Newtonsoft.Json" version="6.0.1" />
+		</dependencies>
+    </metadata>
+</package>
