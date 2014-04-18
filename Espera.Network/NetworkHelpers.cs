@@ -16,10 +16,10 @@ namespace Espera.Network
 
             using (var ms = new MemoryStream())
             {
-                var serializer = new JsonSerializer();
-
                 using (var writer = new BsonWriter(ms))
                 {
+                    var serializer = new JsonSerializer();
+
                     await Task.Run(() => serializer.Serialize(writer, message));
 
                     serialized = ms.ToArray();
@@ -75,10 +75,10 @@ namespace Espera.Network
 
             using (var memoryStream = new MemoryStream(messageContent))
             {
-                var deserializer = new JsonSerializer();
-
                 using (var reader = new BsonReader(memoryStream))
                 {
+                    var deserializer = new JsonSerializer();
+
                     return deserializer.Deserialize<FileTransferMessage>(reader);
                 }
             }
@@ -133,9 +133,9 @@ namespace Espera.Network
                 using (var stream = new GZipStream(targetStream, CompressionMode.Compress))
                 {
                     await stream.WriteAsync(data, 0, data.Length);
-                }
 
-                return targetStream.ToArray();
+                    return targetStream.ToArray();
+                }
             }
         }
 
