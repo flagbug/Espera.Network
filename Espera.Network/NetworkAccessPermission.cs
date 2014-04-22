@@ -2,7 +2,7 @@
 {
     public enum NetworkAccessPermission
     {
-        Guest,
-        Admin
+        Guest = 0,
+        Admin = 1
     }
 }

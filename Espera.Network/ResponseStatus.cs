@@ -2,13 +2,13 @@
 {
     public enum ResponseStatus
     {
-        Success,
-        Unauthorized,
-        MalformedRequest,
-        NotFound,
-        NotSupported,
-        Rejected,
-        Fatal,
-        WrongPassword
+        Success = 0,
+        Unauthorized = 1,
+        MalformedRequest = 2,
+        NotFound = 3,
+        NotSupported = 4,
+        Rejected = 5,
+        Fatal = 6,
+        WrongPassword = 7
     }
 }
