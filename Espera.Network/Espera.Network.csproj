@@ -47,6 +47,7 @@
     <Compile Include="FileTransferInfo.cs" />
     <Compile Include="NetworkAccessPermission.cs" />
     <Compile Include="ConnectionInfo.cs" />
+    <Compile Include="NetworkConstants.cs" />
     <Compile Include="NetworkHelpers.cs" />
     <Compile Include="NetworkMessage.cs" />
     <Compile Include="NetworkMessageType.cs" />

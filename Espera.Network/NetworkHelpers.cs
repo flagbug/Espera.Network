@@ -10,6 +10,11 @@ namespace Espera.Network
 {
     public static class NetworkHelpers
     {
+        public static bool IsPortValid(int port)
+        {
+            return port >= NetworkConstants.MinPort && port <= NetworkConstants.MaxPort;
+        }
+
         public static async Task<byte[]> PackFileTransferMessageAsync(FileTransferMessage message)
         {
             byte[] serialized;

@@ -7,6 +7,23 @@ namespace Espera.Network.Tests
 {
     public class NetworkHelpersTest
     {
+        public class TheIsPortValidMethod
+        {
+            [Fact]
+            public void ValidatesMaximumPort()
+            {
+                Assert.True(NetworkHelpers.IsPortValid(NetworkConstants.MaxPort));
+                Assert.False(NetworkHelpers.IsPortValid(NetworkConstants.MaxPort + 1));
+            }
+
+            [Fact]
+            public void ValidatesMinimumPort()
+            {
+                Assert.True(NetworkHelpers.IsPortValid(NetworkConstants.MinPort));
+                Assert.False(NetworkHelpers.IsPortValid(NetworkConstants.MinPort - 1));
+            }
+        }
+
         public class TheReadNextFileTransferMessageAsyncMethod
         {
             [Fact]
