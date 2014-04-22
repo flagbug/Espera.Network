@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace Espera.Network
 {
@@ -9,7 +9,7 @@ namespace Espera.Network
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public JObject Parameters { get; set; }
 
-        public string RequestAction { get; set; }
+        public RequestAction RequestAction { get; set; }
 
         public Guid RequestId { get; set; }
     }

@@ -6,6 +6,6 @@ namespace Espera.Network
     {
         public JObject Content { get; set; }
 
-        public string PushAction { get; set; }
+        public PushAction PushAction { get; set; }
     }
 }
