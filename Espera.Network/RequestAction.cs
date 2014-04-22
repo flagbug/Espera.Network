@@ -40,43 +40,53 @@
         RemovePlaylistSong = 203,
 
         /// <summary>
+        /// Moves the song up in the playlist.
+        /// </summary>
+        MovePlaylistSongUp = 204,
+
+        /// <summary>
+        /// Moves the song down in the playlist.
+        /// </summary>
+        MovePlaylistSongDown = 205,
+
+        /// <summary>
         /// Play a song in the playlist.
         /// </summary>
-        PlayPlaylistSong = 204,
+        PlayPlaylistSong = 206,
 
         /// <summary>
         /// Pause the currently playing song.
         /// </summary>
-        PauseSong = 205,
+        PauseSong = 207,
 
         /// <summary>
         /// Continue the currently paused song.
         /// </summary>
-        ContinueSong = 206,
+        ContinueSong = 208,
 
         /// <summary>
         /// Play the next song in the playlist.
         /// </summary>
-        PlayNextSong = 207,
+        PlayNextSong = 209,
 
         /// <summary>
         /// Play the previous song in the playlist.
         /// </summary>
-        PlayPreviousSong = 208,
+        PlayPreviousSong = 210,
 
         /// <summary>
         /// Gets the current volume.
         /// </summary>
-        GetVolume = 209,
+        GetVolume = 211,
 
         /// <summary>
         /// Sets the current volume.
         /// </summary>
-        SetVolume = 210,
+        SetVolume = 212,
 
         /// <summary>
         /// Votes for a song.
         /// </summary>
-        VoteForSong = 211,
+        VoteForSong = 213,
     }
 }
