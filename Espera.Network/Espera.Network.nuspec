@@ -15,6 +15,8 @@
       <dependency id="Newtonsoft.Json" version="6.0.1" />
     </dependencies>
   </metadata>
-  <file src="bin\Release\Espera.Network.dll" target="lib\portable-net45+monoandroid\Espera.Network.dll" />
-  <file src="bin\Release\Espera.Network.xml" target="lib\portable-net45+monoandroid\Espera.Network.xml" />
+  <files>
+    <file src="bin\Release\Espera.Network.dll" target="lib\portable-net45+monoandroid\Espera.Network.dll" />
+    <file src="bin\Release\Espera.Network.xml" target="lib\portable-net45+monoandroid\Espera.Network.xml" />
+  </files>
 </package>
