@@ -32,7 +32,7 @@
         /// <summary>
         /// Add one or more songs to the playlist and play them immediately.
         /// </summary>
-        AddPlaylistSongNow = 202,
+        AddPlaylistSongsNow = 202,
 
         /// <summary>
         /// Removes the song from the playlist.
@@ -50,7 +50,7 @@
         MovePlaylistSongDown = 205,
 
         /// <summary>
-        /// Play a song in the playlist.
+        /// Play an existing song in the playlist.
         /// </summary>
         PlayPlaylistSong = 206,
 
@@ -88,5 +88,10 @@
         /// Votes for a song.
         /// </summary>
         VoteForSong = 213,
+
+        /// <summary>
+        /// Tells the file transfer handler that a song will be sent next.
+        /// </summary>
+        QueueRemoteSong = 214,
     }
 }
