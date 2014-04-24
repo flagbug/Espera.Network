@@ -26,9 +26,10 @@ namespace Espera.Network
                     var serializer = new JsonSerializer();
 
                     await Task.Run(() => serializer.Serialize(writer, message));
-
-                    serialized = ms.ToArray();
                 }
+
+                // Don't return earlier here, we don't know of the BsonWriter is finished.
+                serialized = ms.ToArray();
             }
 
             byte[] length = BitConverter.GetBytes(serialized.Length); // We have a fixed size of 4 bytes
@@ -138,9 +139,10 @@ namespace Espera.Network
                 using (var stream = new GZipStream(targetStream, CompressionMode.Compress))
                 {
                     await stream.WriteAsync(data, 0, data.Length);
-
-                    return targetStream.ToArray();
                 }
+
+                // Don't return earlier, or else the GZipStream isn't closed and we get corrupted data
+                return targetStream.ToArray();
             }
         }
 
