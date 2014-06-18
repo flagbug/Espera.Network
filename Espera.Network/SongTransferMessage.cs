@@ -2,8 +2,10 @@
 
 namespace Espera.Network
 {
-    public class FileTransferInfo
+    public class SongTransferMessage
     {
+        public byte[] Data { get; set; }
+
         public Guid TransferId { get; set; }
     }
 }

@@ -2,7 +2,8 @@
 {
     public enum NetworkSongSource
     {
-        Local,
-        Youtube
+        Local = 0,
+        Youtube = 1,
+        Remote = 2
     }
 }

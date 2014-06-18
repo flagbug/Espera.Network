@@ -2,9 +2,9 @@
 
 namespace Espera.Network
 {
-    public class FileTransferMessage
+    public class SongTransferInfo
     {
-        public byte[] Data { get; set; }
+        public NetworkSong Metadata { get; set; }
 
         public Guid TransferId { get; set; }
     }

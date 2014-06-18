@@ -12,7 +12,7 @@ namespace Espera.Network
 
         public string Genre { get; set; }
 
-        public Guid Guid { get; set; }
+        public Guid? Guid { get; set; }
 
         public NetworkSongSource Source { get; set; }
 

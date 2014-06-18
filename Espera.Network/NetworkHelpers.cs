@@ -15,7 +15,7 @@ namespace Espera.Network
             return port >= NetworkConstants.MinPort && port <= NetworkConstants.MaxPort;
         }
 
-        public static async Task<byte[]> PackFileTransferMessageAsync(FileTransferMessage message)
+        public static async Task<byte[]> PackFileTransferMessageAsync(SongTransferMessage message)
         {
             byte[] serialized;
 
@@ -61,7 +61,7 @@ namespace Espera.Network
             return returnData;
         }
 
-        public static async Task<FileTransferMessage> ReadNextFileTransferMessageAsync(this Stream stream)
+        public static async Task<SongTransferMessage> ReadNextFileTransferMessageAsync(this Stream stream)
         {
             byte[] messageLength = await stream.ReadAsync(4);
 
@@ -85,7 +85,7 @@ namespace Espera.Network
                 {
                     var deserializer = new JsonSerializer();
 
-                    return deserializer.Deserialize<FileTransferMessage>(reader);
+                    return deserializer.Deserialize<SongTransferMessage>(reader);
                 }
             }
         }
