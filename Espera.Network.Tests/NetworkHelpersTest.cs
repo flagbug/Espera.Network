@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Espera.Network.Tests
@@ -24,12 +25,31 @@ namespace Espera.Network.Tests
             }
         }
 
+        public class ThePackMessageAsyncMethod
+        {
+            [Fact]
+            public async Task SmokeTest()
+            {
+                var message = new NetworkMessage
+                {
+                    MessageType = NetworkMessageType.Request,
+                    Payload = JObject.FromObject(new RequestInfo
+                    {
+                        RequestAction = RequestAction.GetConnectionInfo,
+                        RequestId = new Guid()
+                    })
+                };
+
+                byte[] packed = await NetworkHelpers.PackMessageAsync(message);
+            }
+        }
+
         public class TheReadNextFileTransferMessageAsyncMethod
         {
             [Fact]
             public async Task SmokeTest()
             {
-                var message = new FileTransferMessage
+                var message = new SongTransferMessage
                 {
                     Data = new byte[] { 0, 1, 0, 1 },
                     TransferId = Guid.NewGuid()
@@ -39,7 +59,7 @@ namespace Espera.Network.Tests
 
                 using (var ms = new MemoryStream(packedMessage))
                 {
-                    FileTransferMessage unpackedMessage = await ms.ReadNextFileTransferMessageAsync();
+                    SongTransferMessage unpackedMessage = await ms.ReadNextFileTransferMessageAsync();
 
                     Assert.Equal(message.Data, unpackedMessage.Data);
                     Assert.Equal(message.TransferId, unpackedMessage.TransferId);
