@@ -4,6 +4,6 @@
     {
         Local = 0,
         Youtube = 1,
-        Remote = 2
+        Mobile = 2
     }
 }
