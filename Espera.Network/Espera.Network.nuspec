@@ -12,6 +12,7 @@
     <description>Network classes for Espera.</description>
     <tags></tags>
     <dependencies>
+	  <dependency id="Microsoft.Bcl.Compression" version="3.9.83" />
       <dependency id="Newtonsoft.Json" version="6.0.1" />
     </dependencies>
   </metadata>
