@@ -5,6 +5,7 @@
         UpdateAccessPermission = 0,
         UpdateCurrentPlaylist = 1,
         UpdatePlaybackState = 2,
-        UpdateRemainingVotes = 3
+        UpdateRemainingVotes = 3,
+        UpdateCurrentPlaybackTime = 4
     }
 }
