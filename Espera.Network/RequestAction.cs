@@ -93,5 +93,10 @@
         /// Tells the file transfer handler that a song will be sent next.
         /// </summary>
         QueueRemoteSong = 214,
+
+        /// <summary>
+        /// Sets the current playback time.
+        /// </summary>
+        SetCurrentTime = 215
     }
 }
