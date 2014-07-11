@@ -17,5 +17,7 @@ namespace Espera.Network
         public NetworkSongSource Source { get; set; }
 
         public string Title { get; set; }
+
+        public int TrackNumber { get; set; }
     }
 }
