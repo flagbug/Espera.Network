@@ -4,6 +4,7 @@
     {
         Local = 0,
         Youtube = 1,
-        Mobile = 2
+        Mobile = 2,
+        SoundCloud = 3
     }
 }
