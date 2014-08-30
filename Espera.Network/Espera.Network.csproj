@@ -39,6 +39,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GuestSystemInfo.cs" />
     <Compile Include="SongTransferMessage.cs" />
     <Compile Include="SongTransferInfo.cs" />
     <Compile Include="NetworkAccessPermission.cs" />
