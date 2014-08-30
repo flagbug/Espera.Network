@@ -15,11 +15,6 @@
         GetConnectionInfo = 0,
 
         /// <summary>
-        /// Gets the info for the guest system, such as the activation state and the remaining votes.
-        /// </summary>
-        GetGuestSystemInfo = 1,
-
-        /// <summary>
         /// Get the library stored on the server.
         /// </summary>
         GetLibraryContent = 100,

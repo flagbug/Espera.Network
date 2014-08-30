@@ -6,6 +6,8 @@ namespace Espera.Network
     {
         public NetworkAccessPermission AccessPermission { get; set; }
 
+        public GuestSystemInfo GuestSystemInfo { get; set; }
+
         public Version ServerVersion { get; set; }
     }
 }
