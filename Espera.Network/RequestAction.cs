@@ -19,6 +19,8 @@
         /// </summary>
         GetLibraryContent = 100,
 
+        GetSoundCloudSongs = 101,
+
         /// <summary>
         /// Get the currently active playlist.
         /// </summary>

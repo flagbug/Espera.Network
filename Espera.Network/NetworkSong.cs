@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Espera.Network
 {
@@ -7,6 +8,9 @@ namespace Espera.Network
         public string Album { get; set; }
 
         public string Artist { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public byte[] ArtworkData { get; set; }
 
         public TimeSpan Duration { get; set; }
 
