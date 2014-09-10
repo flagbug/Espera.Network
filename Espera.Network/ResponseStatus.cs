@@ -9,6 +9,7 @@
         NotSupported = 4,
         Rejected = 5,
         Fatal = 6,
-        WrongPassword = 7
+        WrongPassword = 7,
+        Failed = 8
     }
 }
