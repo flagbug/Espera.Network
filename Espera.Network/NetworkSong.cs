@@ -10,7 +10,7 @@ namespace Espera.Network
         public string Artist { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public byte[] ArtworkData { get; set; }
+        public string ArtworkKey { get; set; }
 
         public TimeSpan Duration { get; set; }
 
