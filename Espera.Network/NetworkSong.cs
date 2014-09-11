@@ -24,6 +24,12 @@ namespace Espera.Network
         [JsonProperty(Required = Required.Always)]
         public Guid Guid { get; set; }
 
+        /// <summary>
+        /// YouTube views or SoundCloud playbacks
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int PlaybackCount { get; set; }
+
         [JsonProperty(Required = Required.Always)]
         public NetworkSongSource Source { get; set; }
 
