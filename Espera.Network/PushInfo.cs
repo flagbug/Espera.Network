@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Espera.Network
 {
@@ -6,6 +7,7 @@ namespace Espera.Network
     {
         public JObject Content { get; set; }
 
+        [JsonProperty(Required = Required.Always)]
         public PushAction PushAction { get; set; }
     }
 }
