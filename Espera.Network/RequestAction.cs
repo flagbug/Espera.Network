@@ -21,6 +21,8 @@
 
         GetSoundCloudSongs = 101,
 
+        GetYoutubeSongs = 102,
+
         /// <summary>
         /// Get the currently active playlist.
         /// </summary>
