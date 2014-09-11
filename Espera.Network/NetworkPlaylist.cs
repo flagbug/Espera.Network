@@ -6,7 +6,7 @@ namespace Espera.Network
 {
     public class NetworkPlaylist
     {
-        [JsonProperty(Required = Required.Always)]
+        [JsonProperty(Required = Required.AllowNull)]
         public int? CurrentIndex { get; set; }
 
         [JsonProperty(Required = Required.Always)]
