@@ -5,7 +5,8 @@
     ///
     /// Common actions are in the range of 0 - 99.
     /// Library actions are in the range of 100 - 199.
-    /// Playlist and playback actions are on the range of 200 - 299.
+    /// Playlist and playback actions are in the range of 200 - 299.
+    /// UI actions are in the range of 300 - 399.
     /// </summary>
     public enum RequestAction
     {
@@ -101,6 +102,11 @@
         /// <summary>
         /// Sets the current playback time.
         /// </summary>
-        SetCurrentTime = 215
+        SetCurrentTime = 215,
+
+        /// <summary>
+        /// Toggles the open state of the YouTube player flyout.
+        /// </summary>
+        ToggleYoutubePlayer = 300
     }
 }
