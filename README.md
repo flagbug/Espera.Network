@@ -6,7 +6,7 @@ This repository contains the DTOs and network protocol helpers for the [Espera](
 
 The protocol is a simple fixed-header TCP protocol
 
-## Structure
+### Structure
 
 Each message begins with a 4-byte header that describes the length of the message content.
 
