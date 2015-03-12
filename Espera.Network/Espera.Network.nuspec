@@ -12,12 +12,11 @@
     <description>Network classes for Espera.</description>
     <tags></tags>
     <dependencies>
-	  <dependency id="Microsoft.Bcl.Compression" version="3.9.83" />
       <dependency id="Newtonsoft.Json" version="6.0.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\Espera.Network.dll" target="lib\portable-net45+monoandroid\Espera.Network.dll" />
-    <file src="bin\Release\Espera.Network.xml" target="lib\portable-net45+monoandroid\Espera.Network.xml" />
+    <file src="bin\Release\Espera.Network.dll" target="lib\portable-net45+monoandroid+wpa81\Espera.Network.dll" />
+    <file src="bin\Release\Espera.Network.xml" target="lib\portable-net45+monoandroid+wpa81\Espera.Network.xml" />
   </files>
 </package>
